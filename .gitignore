@@ -1,0 +1,10 @@
+.terraform/
+*.tfplan
+*.out
+*.log
+*.zip
+*.jar
+target/
+.DS_Store
+terraform.tfstate*
+*.tfvars
