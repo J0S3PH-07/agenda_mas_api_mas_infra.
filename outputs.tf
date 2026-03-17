@@ -1,6 +1,6 @@
 output "load_balancer_url" {
   description = "The public DNS name of the Application Load Balancer"
-  value       = aws_lb.main.dns_name
+  value       = module.alb.alb_dns_name
 }
 
 # ------------------------------------------------------------------------------
@@ -9,17 +9,17 @@ output "load_balancer_url" {
 
 output "cognito_user_pool_arn" {
   description = "ARN del User Pool de Cognito"
-  value       = aws_cognito_user_pool.main.arn
+  value       = module.cognito.user_pool_arn
 }
 
 output "cognito_app_client_id" {
   description = "ID del App Client de Cognito"
-  value       = aws_cognito_user_pool_client.main.id
+  value       = module.cognito.client_id
 }
 
 output "cognito_hosted_ui_url" {
   description = "URL del Hosted UI de Cognito para login"
-  value       = "https://${aws_cognito_user_pool_domain.main.domain}.auth.${var.aws_region}.amazoncognito.com/login?client_id=${aws_cognito_user_pool_client.main.id}&response_type=code&scope=openid+email+profile&redirect_uri=${var.cognito_callback_urls[0]}"
+  value       = "https://${module.cognito.domain}.auth.${var.aws_region}.amazoncognito.com/login?client_id=${module.cognito.client_id}&response_type=code&scope=openid+email+profile&redirect_uri=${var.cognito_callback_urls[0]}"
 }
 
 # ------------------------------------------------------------------------------
@@ -28,15 +28,15 @@ output "cognito_hosted_ui_url" {
 
 output "rds_endpoint" {
   description = "Endpoint de conexión de la base de datos RDS PostgreSQL"
-  value       = aws_db_instance.main.address
-}
-
-output "rds_port" {
-  description = "Puerto de la base de datos"
-  value       = aws_db_instance.main.port
+  value       = module.rds.db_instance_address
 }
 
 output "db_password_ssm_path" {
   description = "Ruta en SSM Parameter Store donde se almacena la contraseña de la BD"
-  value       = aws_ssm_parameter.db_password.name
+  value       = "/${var.project_name}/db/password"
+}
+
+output "frontend_url" {
+  description = "URL del sitio web del frontend en S3"
+  value       = "http://${module.s3_frontend.website_endpoint}"
 }

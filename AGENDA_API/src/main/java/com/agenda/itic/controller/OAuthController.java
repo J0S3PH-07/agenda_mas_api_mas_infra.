@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.agenda.itic.model.User;
-import com.agenda.itic.service.UserService;
+import com.agenda.itic.dto.UsuariRequestDTO;
+import com.agenda.itic.model.Usuari;
+import com.agenda.itic.service.UsuariService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -26,24 +27,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class OAuthController {
     
     @Autowired
-    UserService userService;
+    UsuariService usuariService;
     
     @GetMapping("/home")
     public void home(Authentication authentication, HttpServletResponse response) {
-        OAuth2User authUser = (OAuth2User) authentication.getPrincipal();
-        String email = authUser.getAttribute("email");
-        String name = authUser.getAttribute("name");
-        
-        User user = userService.findByEmail(email).orElse(null);
-        if (user == null) {
-            user = new User();
-            user.setEmail(email);
-            user.setName(name);
-            user.setRole("PUBLIC"); // Default role
-            user = userService.save(user);
-        }
+        OAuth2User user = (OAuth2User) authentication.getPrincipal();
+        UsuariRequestDTO dto = new UsuariRequestDTO();
+        dto.setEmail(user.getAttribute("email"));
+        dto.setNom(user.getAttribute("name"));  
+        String providerName = "google";
+        dto.setProvider(providerName);
+        String providerId = user.getName();
+        dto.setProviderId(providerId);
+        Usuari usuari = usuariService.createOrUpdateOAuthUsuari(dto);
 
-        if (user == null) {
+        if (usuari == null) {
             try {
                 response.sendRedirect("http://localhost:8085/home");
             } catch (IOException e) {
@@ -53,12 +51,15 @@ public class OAuthController {
             return;
         }
 
+    
         try {
-            response.sendRedirect("http://localhost:8081?token=" );
+            response.sendRedirect("http://localhost:8081?token=");
         } catch (IOException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
     }   
 
+    
+    
 }

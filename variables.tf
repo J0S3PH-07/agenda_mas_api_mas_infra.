@@ -16,6 +16,12 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
+variable "domain_name" {
+  description = "The root domain name for the application"
+  type        = string
+  default     = "agenda.ianordonez.cat"
+}
+
 variable "public_subnet_a_cidr" {
   description = "CIDR block for public subnet A"
   type        = string
@@ -43,7 +49,7 @@ variable "az_b" {
 variable "ecr_image_url" {
   description = "URL of the image to deploy"
   type        = string
-  default     = "033588268326.dkr.ecr.us-east-1.amazonaws.com/restricted-ecs-project-repo:latest"
+  default     = "471112740860.dkr.ecr.us-east-1.amazonaws.com/restricted-ecs-project-repo:latest"
 }
 
 variable "container_port" {
@@ -111,4 +117,10 @@ variable "google_client_secret" {
   type        = string
   default     = "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"
   sensitive   = true
+}
+
+variable "execution_role_arn" {
+  description = "ARN of an existing IAM role to use as ECS task execution role"
+  type        = string
+  default     = "arn:aws:iam::471112740860:role/LabRole"
 }
