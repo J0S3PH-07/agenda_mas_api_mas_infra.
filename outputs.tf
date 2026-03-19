@@ -40,3 +40,8 @@ output "frontend_url" {
   description = "URL del sitio web del frontend en S3"
   value       = "http://${module.s3_frontend.website_endpoint}"
 }
+
+output "frontend_bucket_name" {
+  description = "Nombre del bucket S3 del frontend"
+  value       = module.s3_frontend.bucket_name
+}

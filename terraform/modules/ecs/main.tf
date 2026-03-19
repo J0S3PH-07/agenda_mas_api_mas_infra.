@@ -129,12 +129,18 @@ resource "aws_ecs_task_definition" "frontend" {
   cpu                      = "256"
   memory                   = "512"
   execution_role_arn       = var.execution_role_arn
+  task_role_arn            = var.execution_role_arn
 
   container_definitions = jsonencode([
     {
       name      = "frontend"
-      image     = var.frontend_image_url
+      image     = "nginx:alpine"
       essential = true
+      entryPoint = [
+        "sh",
+        "-c",
+        "apk add --no-cache aws-cli && aws s3 sync s3://${var.s3_bucket_name} /usr/share/nginx/html --delete && nginx -g 'daemon off;'"
+      ]
       portMappings = [
         {
           containerPort = 80

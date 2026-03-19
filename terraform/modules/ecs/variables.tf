@@ -17,3 +17,4 @@ variable "google_client_secret" { type = string }
 variable "domain_name" { type = string }
 variable "target_group_arn" { type = string }
 variable "frontend_target_group_arn" { type = string }
+variable "s3_bucket_name" { type = string }

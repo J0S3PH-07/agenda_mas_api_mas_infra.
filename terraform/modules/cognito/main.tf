@@ -83,7 +83,7 @@ resource "aws_cognito_user_pool_client" "this" {
   callback_urls = var.cognito_callback_urls
   logout_urls   = var.cognito_logout_urls
 
-  supported_identity_providers = ["COGNITO"]
+  supported_identity_providers = ["COGNITO", "Google"]
 
   access_token_validity  = 1
   id_token_validity      = 1
@@ -93,6 +93,24 @@ resource "aws_cognito_user_pool_client" "this" {
     access_token  = "hours"
     id_token      = "hours"
     refresh_token = "days"
+  }
+}
+
+resource "aws_cognito_identity_provider" "google" {
+  user_pool_id  = aws_cognito_user_pool.this.id
+  provider_name = "Google"
+  provider_type = "Google"
+
+  provider_details = {
+    authorize_scopes = "openid email profile"
+    client_id        = var.google_client_id
+    client_secret    = var.google_client_secret
+  }
+
+  attribute_mapping = {
+    email    = "email"
+    name     = "name"
+    username = "sub"
   }
 }
 

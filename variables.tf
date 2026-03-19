@@ -65,13 +65,13 @@ variable "container_port" {
 variable "cognito_callback_urls" {
   description = "URLs de callback permitidas para OAuth 2.0 (Cognito Hosted UI)"
   type        = list(string)
-  default     = ["https://localhost:3000/callback"]
+  default     = ["https://agenda.ianordonez.cat/admin.html"]
 }
 
 variable "cognito_logout_urls" {
   description = "URLs de logout permitidas para OAuth 2.0 (Cognito Hosted UI)"
   type        = list(string)
-  default     = ["https://localhost:3000/logout"]
+  default     = ["https://agenda.ianordonez.cat/index.html"]
 }
 
 # ------------------------------------------------------------------------------

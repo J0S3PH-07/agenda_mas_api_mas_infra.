@@ -80,4 +80,5 @@ module "ecs" {
   domain_name               = var.domain_name
   target_group_arn          = module.alb.target_group_arn
   frontend_target_group_arn = module.alb.frontend_target_group_arn
+  s3_bucket_name            = module.s3_frontend.bucket_name
 }
